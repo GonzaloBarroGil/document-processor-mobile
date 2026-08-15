@@ -1,0 +1,13 @@
+---
+description: Execute implementation tasks following TDD — Red → Green → Refactor
+agent: implementer
+subtask: true
+model: deepseek/deepseek-v4-pro
+---
+Execute the next pending implementation task from the plan.
+Follow TDD strictly (Vitest): write failing test → write code → verify green → refactor.
+Keep `tsc --noEmit` and ESLint clean; use the generated client for all API calls.
+One task per invocation. Report results to HITL after each task.
+
+Load context from the family constitution (`document-processor-orchestration/docs/constitution.md`),
+@docs/plan.md, and @docs/adr/.

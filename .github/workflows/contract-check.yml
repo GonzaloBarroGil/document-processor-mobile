@@ -1,0 +1,47 @@
+name: contract-check
+
+on:
+  repository_dispatch:
+    types: [contract-change]
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: Hub contract ref (branch/sha)
+        required: true
+        default: main
+
+jobs:
+  regenerate-and-compile:
+    name: Regenerate client + typecheck + test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Resolve contract ref
+        id: ref
+        run: |
+          echo "ref=${{ github.event.client_payload.ref || github.event.inputs.ref }}" >> "$GITHUB_OUTPUT"
+
+      - name: Fetch OpenAPI contract
+        run: |
+          curl -fsSL \
+            "https://raw.githubusercontent.com/GonzaloBarroGil/document-processor-orchestration/${{ steps.ref.outputs.ref }}/docs/contracts/openapi.yaml" \
+            -o openapi.yaml
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Regenerate client
+        run: pnpm generate:client
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Test
+        run: pnpm test -- --run
