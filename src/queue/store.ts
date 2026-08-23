@@ -46,6 +46,14 @@ function generateId(): string {
   return `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
 }
 
+let lastCreatedAt = 0;
+
+function nextCreatedAt(): number {
+  const now = Date.now();
+  lastCreatedAt = Math.max(now, lastCreatedAt + 1);
+  return lastCreatedAt;
+}
+
 export class QueueStore {
   async add(item: NewQueueItem): Promise<QueueItem> {
     const db = await openDb();
@@ -55,7 +63,7 @@ export class QueueStore {
         throw new QueueFullError();
       }
 
-      const now = Date.now();
+      const now = nextCreatedAt();
       const queueItem: QueueItem = {
         id: generateId(),
         dataUrl: item.dataUrl,
