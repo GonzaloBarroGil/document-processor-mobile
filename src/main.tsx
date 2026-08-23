@@ -2,6 +2,9 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 
 import { App } from "./App";
+import { attachAuthMiddleware } from "./auth/middleware";
+
+attachAuthMiddleware();
 
 const rootElement = document.getElementById("root");
 if (rootElement === null) {
