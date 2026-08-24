@@ -1,7 +1,9 @@
 name: mobile-e2e
 
 on:
-  workflow_dispatch:
+  push:
+    branches: [main]
+  pull_request:
 
 jobs:
   maestro:
