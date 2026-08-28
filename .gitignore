@@ -7,3 +7,5 @@ coverage
 openapi.yaml
 ios
 android
+test-results
+playwright-report

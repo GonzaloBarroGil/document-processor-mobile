@@ -76,3 +76,25 @@ export async function captureDocument(
     sizeBytes: dataUrlSizeBytes(dataUrl),
   };
 }
+
+export const mockCameraGateway: CameraGateway = {
+  async getPhoto(): Promise<Photo> {
+    const canvas = document.createElement("canvas");
+    canvas.width = CAPTURE_WIDTH;
+    canvas.height = CAPTURE_HEIGHT;
+    const ctx = canvas.getContext("2d");
+    if (ctx === null) {
+      throw new Error("Failed to create 2d canvas context");
+    }
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, CAPTURE_WIDTH, CAPTURE_HEIGHT);
+    const dataUrl = canvas.toDataURL("image/jpeg", 0.85);
+    return { dataUrl, format: "jpeg", saved: true };
+  },
+};
+
+export function resolveCameraGateway(): CameraGateway {
+  return import.meta.env.VITE_MOCK_CAPTURE === "1"
+    ? mockCameraGateway
+    : capacitorCameraGateway;
+}
