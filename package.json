@@ -12,6 +12,7 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "test": "vitest",
+    "test:e2e": "playwright test",
     "sync": "cap sync",
     "generate:client": "openapi-typescript openapi.yaml -o src/api/schema.d.ts"
   },
@@ -27,6 +28,7 @@
     "@capacitor/cli": "^7.0.0",
     "@capacitor/ios": "^7.0.0",
     "@eslint/js": "^9.24.0",
+    "@playwright/test": "^1.62.1",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",

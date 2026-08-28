@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from "react";
 
 import { isAuthenticated, login, logout } from "./auth/auth";
-import { capacitorCameraGateway, captureDocument } from "./capture/camera";
+import { captureDocument, resolveCameraGateway } from "./capture/camera";
 import { validateCaptureQuality } from "./capture/quality";
 import { QueueStore } from "./queue/store";
 import { apiUploader } from "./sync/uploader";
@@ -31,7 +31,7 @@ export function App() {
   async function handleCapture() {
     setError(null);
     try {
-      const captured = await captureDocument(capacitorCameraGateway);
+      const captured = await captureDocument(resolveCameraGateway());
       const quality = validateCaptureQuality({
         width: captured.width,
         height: captured.height,
